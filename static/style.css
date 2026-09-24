@@ -1,0 +1,1851 @@
+/* ===================================================================
+   STARTUP WARS — ESTILOS MODERNOS ESTILO DASHBOARD DE STARTUP
+   =================================================================== */
+
+:root {
+    --bg-main: #070b14;
+    --bg-card: rgba(16, 24, 44, 0.78);
+    --bg-card-hover: rgba(24, 36, 66, 0.9);
+    --bg-input: rgba(11, 18, 36, 0.85);
+    
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-highlight: rgba(99, 102, 241, 0.35);
+    --border-active: #6366f1;
+    
+    --color-primary: #4f46e5;
+    --color-primary-light: #6366f1;
+    --color-accent: #06b6d4;
+    --color-purple: #8b5cf6;
+    --color-pink: #ec4899;
+    --color-gold: #f59e0b;
+    --color-green: #10b981;
+    --color-red: #ef4444;
+    
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+    
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+    
+    --shadow-card: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.35);
+    --shadow-glow-gold: 0 0 25px rgba(245, 158, 11, 0.35);
+    --shadow-glow-green: 0 0 25px rgba(16, 185, 129, 0.35);
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Fundo Iluminado com Luz Neon */
+.bg-glow {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.15;
+}
+
+.bg-glow-1 {
+    top: -150px;
+    left: -100px;
+    background: radial-gradient(circle, #4f46e5, #06b6d4);
+}
+
+.bg-glow-2 {
+    bottom: -150px;
+    right: -100px;
+    background: radial-gradient(circle, #8b5cf6, #ec4899);
+}
+
+/* Container do App */
+.app-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Painel de Vidro (Glassmorphism) */
+.glass-panel {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+}
+
+/* Utilitários de Texto e Cores */
+.text-gold { color: var(--color-gold) !important; }
+.text-cyan { color: var(--color-accent) !important; }
+.text-blue { color: var(--color-primary-light) !important; }
+.text-green { color: var(--color-green) !important; }
+.text-red { color: var(--color-red) !important; }
+.text-purple { color: var(--color-purple) !important; }
+.text-pink { color: var(--color-pink) !important; }
+.text-muted { color: var(--text-muted) !important; }
+
+/* Botões */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    border: 1px solid var(--border-subtle);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--color-primary-light);
+    border: 1px solid var(--border-highlight);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: rgba(99, 102, 241, 0.12);
+    border-color: var(--color-primary-light);
+}
+
+.btn-danger-outline {
+    background: transparent;
+    color: var(--color-red);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger-outline:hover {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.btn-glow {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+}
+
+.btn-glow:hover {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.8);
+}
+
+.btn-large {
+    padding: 14px 28px;
+    font-size: 1.1rem;
+}
+
+.btn-sm {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+}
+
+.btn-xs {
+    padding: 5px 10px;
+    font-size: 0.78rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Gerenciamento de Visualizações SPA */
+.view {
+    display: none;
+    width: 100%;
+    animation: fadeIn 0.35s ease;
+}
+
+.view.active-view {
+    display: flex;
+}
+
+.hidden-view {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===================================================================
+   1. TELA INICIAL (HERO)
+   =================================================================== */
+#view-home {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.home-card {
+    max-width: 740px;
+    width: 100%;
+    padding: 42px 32px;
+    text-align: center;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    background: radial-gradient(circle at top, rgba(26, 36, 68, 0.9), rgba(13, 19, 36, 0.95));
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    color: var(--color-primary-light);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.game-title {
+    font-family: var(--font-heading);
+    font-size: 3.4rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+}
+
+.game-title span {
+    background: linear-gradient(135deg, #06b6d4, #6366f1, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.game-tagline {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 24px;
+}
+
+.home-actions {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.home-actions .btn {
+    min-width: 160px;
+}
+
+/* Mini Tutorial na Tela Inicial */
+.mini-tutorial-preview {
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.mini-tutorial-header {
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tutorial-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+}
+
+.step-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    padding: 10px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.step-card:hover {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
+}
+
+.step-num {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 18px;
+    height: 18px;
+    background: rgba(99, 102, 241, 0.2);
+    border: 1px solid var(--border-highlight);
+    color: var(--color-primary-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+
+.step-content strong {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    margin-bottom: 3px;
+    padding-right: 16px;
+}
+
+.step-content p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+/* Modal Detalhado de Tutorial */
+.tutorial-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tutorial-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: var(--transition);
+}
+
+.tutorial-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tut-icon {
+    font-size: 1.5rem;
+    margin-top: 2px;
+    min-width: 26px;
+    text-align: center;
+}
+
+.tut-info h4 {
+    font-size: 0.92rem;
+    margin-bottom: 3px;
+}
+
+.tut-info p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.quick-instructions {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 20px;
+    flex-wrap: wrap;
+}
+
+.rule-item {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rule-item i {
+    color: var(--color-accent);
+}
+
+/* ===================================================================
+   MODAIS
+   =================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(4, 7, 15, 0.85);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-card {
+    width: 100%;
+    max-width: 500px;
+    padding: 28px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-wide {
+    max-width: 750px;
+}
+
+.modal-large {
+    max-width: 850px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 14px;
+}
+
+.modal-header h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    color: var(--text-main);
+}
+
+/* Formulários */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    color: var(--color-accent);
+    margin-right: 4px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+}
+
+.input-code {
+    text-transform: uppercase;
+    font-family: monospace;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* Seletor de Modo de Jogo */
+.mode-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.mode-option input {
+    display: none;
+}
+
+.mode-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.mode-box strong {
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.mode-box small {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.mode-option input:checked + .mode-box {
+    background: rgba(99, 102, 241, 0.18);
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+}
+
+/* Seção de Entrada Direta e Tabela de Salas */
+.direct-join-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.direct-join-section h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.join-form-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr auto;
+    gap: 10px;
+}
+
+.section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.table-container {
+    overflow-x: auto;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+}
+
+.rooms-table, .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.rooms-table th, .results-table th {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 12px 16px;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.rooms-table td, .results-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.rooms-table tr:hover, .results-table tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.empty-table-msg {
+    text-align: center;
+    padding: 30px !important;
+    color: var(--text-muted);
+}
+
+/* ===================================================================
+   2. TELA DE SALA DE ESPERA (LOBBY)
+   =================================================================== */
+#view-lobby {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.lobby-card {
+    max-width: 780px;
+    width: 100%;
+    padding: 36px;
+}
+
+.lobby-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.lobby-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.highlight-code {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-primary-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.lobby-meta {
+    display: flex;
+    gap: 10px;
+}
+
+.badge {
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.badge-mode {
+    background: rgba(6, 182, 212, 0.15);
+    border: 1px solid rgba(6, 182, 212, 0.3);
+    color: var(--color-accent);
+}
+
+.badge-players {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--color-green);
+}
+
+.lobby-instruction {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+}
+
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+}
+
+.player-slot-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition);
+}
+
+.player-slot-card.occupied {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.player-slot-card.is-you {
+    border-color: var(--color-accent);
+}
+
+.player-status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #64748b;
+}
+
+.player-status-dot.active {
+    background: var(--color-green);
+    box-shadow: 0 0 8px var(--color-green);
+}
+
+.player-slot-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.player-slot-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-slot-company {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.host-crown {
+    color: var(--color-gold);
+    font-size: 0.9rem;
+}
+
+.lobby-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.host-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+/* ===================================================================
+   3. TELA DA PARTIDA (DASHBOARD COMPLETO)
+   =================================================================== */
+#view-game {
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    padding: 12px;
+    gap: 12px;
+}
+
+/* Top Bar */
+.game-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    flex-shrink: 0;
+    gap: 16px;
+}
+
+.top-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.game-logo {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--text-main);
+}
+
+.game-logo i {
+    color: var(--color-accent);
+}
+
+.top-room-tag {
+    font-size: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+}
+
+.top-timer-box {
+    display: flex;
+    align-items: center;
+}
+
+.timer-display {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-highlight);
+    padding: 6px 18px;
+    border-radius: var(--radius-full);
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.timer-display.timer-warning {
+    color: var(--color-red);
+    border-color: var(--color-red);
+    animation: pulseTimer 1s infinite;
+}
+
+@keyframes pulseTimer {
+    0%, 100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+    50% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.8); }
+}
+
+.top-financial-kpis {
+    display: flex;
+    gap: 14px;
+}
+
+.kpi-item {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-subtle);
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    min-width: 140px;
+}
+
+.kpi-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.kpi-value {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+/* Layout Principal */
+.game-main-layout {
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    gap: 12px;
+    flex: 1;
+    min-height: 0; /* Permite rolagem nos filhos */
+}
+
+/* Área de Operações da Empresa */
+.company-operations-area {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: 10px;
+}
+
+/* Navegação de Abas */
+.operations-nav {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    overflow-x: auto;
+}
+
+.op-tab-btn {
+    flex: 1;
+    background: rgba(16, 24, 44, 0.6);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.op-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-main);
+}
+
+.op-tab-btn.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary-light);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+}
+
+.tab-bet-highlight {
+    border-color: rgba(245, 158, 11, 0.4);
+    color: var(--color-gold);
+}
+
+.tab-bet-highlight.active {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    border-color: #fbbf24;
+    color: #000;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+/* Conteúdo das Abas */
+.operations-content {
+    flex: 1;
+    min-height: 0;
+}
+
+.op-pane {
+    display: none;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.op-pane.active {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+}
+
+.pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pane-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pane-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+/* ABA 1: Mercado */
+.market-price-badge {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-highlight);
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    text-align: right;
+}
+
+.price-title {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.price-val {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-accent);
+}
+
+.price-trend {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.market-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+}
+
+.market-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    transition: var(--transition);
+}
+
+.market-card:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.market-card.highlight-card {
+    border-color: rgba(6, 182, 212, 0.4);
+    background: rgba(6, 182, 212, 0.05);
+}
+
+.market-card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.market-card-cost {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.btn-action-buy {
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid var(--border-highlight);
+    color: #fff;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-action-buy:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary-light);
+}
+
+/* ABA 2: Estoque & Produção */
+.storage-overview {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+}
+
+.storage-bar-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    border-radius: var(--radius-full);
+    transition: width 0.3s ease;
+}
+
+.inventory-split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.inv-stat-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.inv-icon {
+    font-size: 2rem;
+    color: var(--color-accent);
+}
+
+.inv-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.inv-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.inv-count {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.price-setting-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+}
+
+.price-setting-card h4 {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+}
+
+.price-setting-card p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+.price-control-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.price-control-row input[type="range"] {
+    flex: 1;
+    accent-color: var(--color-gold);
+    cursor: pointer;
+}
+
+.price-input-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price-input-box input {
+    width: 90px;
+    text-align: right;
+    font-weight: 700;
+}
+
+/* ABA 3: Funcionários */
+.payroll-badge {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    text-align: right;
+    font-size: 0.8rem;
+}
+
+.payroll-badge b {
+    display: block;
+    color: var(--color-red);
+    font-size: 1.1rem;
+}
+
+.employees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+}
+
+.employee-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.emp-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.emp-icon {
+    font-size: 1.6rem;
+    color: var(--color-purple);
+}
+
+.emp-head h4 {
+    font-size: 0.95rem;
+}
+
+.emp-salary {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.emp-desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.emp-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    padding-top: 10px;
+}
+
+.emp-counter {
+    font-size: 0.9rem;
+}
+
+.emp-btns {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-success {
+    background: var(--color-green);
+    color: #fff;
+    font-weight: 900;
+}
+
+.btn-danger {
+    background: var(--color-red);
+    color: #fff;
+    font-weight: 900;
+}
+
+/* ABA 4: Marketing */
+.reputation-badge {
+    background: rgba(236, 72, 153, 0.1);
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    text-align: right;
+    font-size: 0.8rem;
+}
+
+.reputation-badge b {
+    display: block;
+    color: var(--color-pink);
+    font-size: 1.1rem;
+}
+
+.active-campaign-banner {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-radius: var(--radius-sm);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.marketing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+}
+
+.marketing-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.marketing-card h4 {
+    font-size: 0.95rem;
+}
+
+.mkt-boost {
+    font-size: 0.82rem;
+    color: var(--color-green);
+    font-weight: 600;
+}
+
+.mkt-price {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* ABA 5: ROLETA BET 🎰 */
+.bet-stats-pill {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+}
+
+.bet-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 30px;
+    padding: 10px 0;
+    flex-wrap: wrap;
+}
+
+.wheel-wrapper {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.8rem;
+    color: var(--color-gold);
+    z-index: 10;
+    filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
+}
+
+.wheel-center-cap {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, #1e293b, #0f172a);
+    border: 3px solid var(--color-gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gold);
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    z-index: 5;
+}
+
+.bet-controls-panel {
+    flex: 1;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.bet-status-box {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    text-align: center;
+}
+
+.bet-status-main {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--color-gold);
+    margin-bottom: 4px;
+}
+
+.bet-status-sub {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.bet-amount-selector label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.bet-chips {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.chip-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    padding: 10px 4px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.chip-btn.active {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+}
+
+.btn-spin {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    color: #000;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+.btn-spin:hover:not(:disabled) {
+    box-shadow: var(--shadow-glow-gold);
+}
+
+/* ABA 6: Relatórios & Upgrades */
+.reports-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.dre-card, .upgrade-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dre-card h4, .upgrade-card h4 {
+    font-size: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 8px;
+}
+
+.dre-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    padding: 4px 0;
+}
+
+.current-tier-info {
+    font-size: 0.95rem;
+}
+
+.tier-perks {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.next-tier-box {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-highlight);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    margin-top: 10px;
+}
+
+.next-title {
+    font-size: 0.88rem;
+    margin-bottom: 4px;
+}
+
+.next-cost {
+    font-size: 0.88rem;
+    margin-bottom: 12px;
+}
+
+/* Lateral Direita: Ranking em Tempo Real */
+.game-ranking-sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    min-height: 0;
+}
+
+.ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.ranking-header h3 {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+}
+
+.ranking-live-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-green);
+    box-shadow: 0 0 6px var(--color-green);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.ranking-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ranking-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition);
+}
+
+.ranking-item.is-current-user {
+    border-color: var(--color-accent);
+    background: rgba(6, 182, 212, 0.08);
+}
+
+.rank-medal {
+    font-size: 1.2rem;
+    min-width: 24px;
+    text-align: center;
+}
+
+.rank-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.rank-company {
+    font-weight: 700;
+    font-size: 0.88rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rank-player {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rank-wealth {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--color-accent);
+    text-align: right;
+}
+
+/* Ticker Inferior */
+.game-bottom-ticker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 18px;
+    flex-shrink: 0;
+}
+
+.ticker-badge {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.ticker-content {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===================================================================
+   4. MODAL DE FIM DE PARTIDA & PÓDIO
+   =================================================================== */
+.podium-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0 30px;
+    min-height: 180px;
+}
+
+.podium-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 140px;
+}
+
+.podium-avatar {
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+}
+
+.podium-name {
+    font-weight: 800;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.podium-val {
+    font-size: 0.82rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.podium-block {
+    width: 100%;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #fff;
+}
+
+.podium-1 .podium-block {
+    height: 110px;
+    background: linear-gradient(180deg, #f59e0b, #b45309);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.podium-2 .podium-block {
+    height: 80px;
+    background: linear-gradient(180deg, #94a3b8, #475569);
+}
+
+.podium-3 .podium-block {
+    height: 55px;
+    background: linear-gradient(180deg, #d97706, #78350f);
+}
+
+.stats-section-title {
+    font-size: 1rem;
+    margin: 20px 0 10px;
+    color: var(--text-muted);
+}
+
+.awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.award-badge {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    text-align: center;
+}
+
+.award-icon {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+}
+
+.award-title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.award-winner {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-gold);
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    background: rgba(16, 24, 44, 0.95);
+    border: 1px solid var(--border-highlight);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    animation: slideInToast 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.toast.toast-error {
+    border-color: var(--color-red);
+    background: rgba(30, 10, 15, 0.95);
+}
+
+.toast.toast-success {
+    border-color: var(--color-green);
+    background: rgba(10, 30, 20, 0.95);
+}
+
+@keyframes slideInToast {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsividade Básica */
+@media (max-width: 950px) {
+    #view-game {
+        height: auto;
+        overflow-y: auto;
+    }
+    .game-main-layout {
+        grid-template-columns: 1fr;
+    }
+    .top-financial-kpis {
+        flex-wrap: wrap;
+    }
+    .game-top-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .top-timer-box {
+        justify-content: center;
+    }
+}

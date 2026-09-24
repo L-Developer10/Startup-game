@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARTUP WARS — Jogo Multiplayer de Estratégia Empresarial</title>
+    <!-- Fonte Google Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons via CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Folha de Estilos Customizada -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Socket.IO Client CDN -->
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+</head>
+<body>
+    <!-- Fundo Dinâmico com Efeito de Partículas / Luz Neon -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Container Principal do Aplicativo (SPA) -->
+    <div id="app-container" class="app-container">
+
+        <!-- ======================================================= -->
+        <!-- 1. TELA INICIAL (HERO & MENU PRINCIPAL) -->
+        <!-- ======================================================= -->
+        <section id="view-home" class="view active-view">
+            <div class="home-card glass-panel">
+                <div class="brand-badge">
+                    <i class="fa-solid fa-rocket"></i> MULTIPLAYER ONLINE
+                </div>
+                <h1 class="game-title">STARTUP <span>WARS</span></h1>
+                <p class="game-tagline">"Construa. Invista. Arrisque. Domine o mercado."</p>
+                
+                <div class="home-actions">
+                    <button id="btn-open-create" class="btn btn-primary btn-glow">
+                        <i class="fa-solid fa-plus"></i> CRIAR SALA
+                    </button>
+                    <button id="btn-open-search" class="btn btn-secondary">
+                        <i class="fa-solid fa-magnifying-glass"></i> BUSCAR SALA
+                    </button>
+                    <button id="btn-open-tutorial" class="btn btn-outline">
+                        <i class="fa-solid fa-book-open"></i> COMO JOGAR
+                    </button>
+                </div>
+
+                <!-- Mini Tutorial Rápido na Tela Inicial -->
+                <div class="mini-tutorial-preview">
+                    <div class="mini-tutorial-header">
+                        <span><i class="fa-solid fa-lightbulb text-gold"></i> GUIA RÁPIDO EM 4 PASSOS</span>
+                    </div>
+                    <div class="tutorial-steps-grid">
+                        <div class="step-card">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <strong>Capital Inicial</strong>
+                                <p>Comece com R$ 10.000 para gerenciar sua startup.</p>
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <strong>Compre & Produza</strong>
+                                <p>Compre insumos no Mercado e contrate operários.</p>
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <strong>Venda & Precifique</strong>
+                                <p>Ajuste preços, venda produtos e lance campanhas.</p>
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <strong>BET & Domínio</strong>
+                                <p>Arrisque na roleta BET e conquiste o topo do ranking!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-instructions">
+                    <div class="rule-item"><i class="fa-solid fa-users"></i> 2 a 5 Jogadores</div>
+                    <div class="rule-item"><i class="fa-solid fa-bolt"></i> Modos 5 e 10 min</div>
+                    <div class="rule-item"><i class="fa-solid fa-coins"></i> Dinheiro Virtual</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 2. MODAIS DA TELA INICIAL -->
+        <!-- ======================================================= -->
+
+        <!-- Modal Criar Sala -->
+        <div id="modal-create-room" class="modal-overlay hidden">
+            <div class="modal-card glass-panel">
+                <div class="modal-header">
+                    <h2><i class="fa-solid fa-circle-plus"></i> Criar Nova Sala</h2>
+                    <button class="modal-close" data-close="modal-create-room">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="create-company-name"><i class="fa-solid fa-building"></i> Nome da Empresa:</label>
+                        <input type="text" id="create-company-name" placeholder="Ex: Nexus Tech, Omega Corp" maxlength="25" value="Apex Dynamics">
+                    </div>
+                    <div class="form-group">
+                        <label for="create-player-name"><i class="fa-solid fa-user-tie"></i> Seu Nome de Jogador:</label>
+                        <input type="text" id="create-player-name" placeholder="Ex: Lucas, Sofia" maxlength="20" value="CEO">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-stopwatch"></i> Modo da Partida:</label>
+                        <div class="mode-selector">
+                            <label class="mode-option active">
+                                <input type="radio" name="game-mode" value="fast" checked>
+                                <span class="mode-box">
+                                    <strong>⚡ Rápido</strong>
+                                    <small>5 minutos de jogo</small>
+                                </span>
+                            </label>
+                            <label class="mode-option">
+                                <input type="radio" name="game-mode" value="normal">
+                                <span class="mode-box">
+                                    <strong>🕐 Normal</strong>
+                                    <small>10 minutos de jogo</small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-confirm-create" class="btn btn-primary btn-block">
+                        <i class="fa-solid fa-check"></i> CRIAR E ABRIR SALA
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Buscar / Listar Salas -->
+        <div id="modal-search-room" class="modal-overlay hidden">
+            <div class="modal-card glass-panel modal-wide">
+                <div class="modal-header">
+                    <h2><i class="fa-solid fa-magnifying-glass"></i> Buscar e Entrar em Sala</h2>
+                    <button class="modal-close" data-close="modal-search-room">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="direct-join-section">
+                        <h3>Entrar por Código Direto</h3>
+                        <div class="join-form-row">
+                            <input type="text" id="join-code" class="input-code" placeholder="CÓDIGO (ex: X7K29)" maxlength="5">
+                            <input type="text" id="join-player-name" placeholder="Seu Nome" maxlength="20" value="Investidor">
+                            <input type="text" id="join-company-name" placeholder="Sua Empresa" maxlength="25" value="VentureX">
+                            <button id="btn-confirm-join-code" class="btn btn-primary">
+                                <i class="fa-solid fa-right-to-bracket"></i> ENTRAR
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="public-rooms-section">
+                        <div class="section-title-row">
+                            <h3><i class="fa-solid fa-list-check"></i> Salas Disponíveis</h3>
+                            <button id="btn-refresh-rooms" class="btn btn-xs btn-outline">
+                                <i class="fa-solid fa-arrows-rotate"></i> Atualizar
+                            </button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="rooms-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sala</th>
+                                        <th>Anfitrião</th>
+                                        <th>Jogadores</th>
+                                        <th>Modo</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="public-rooms-tbody">
+                                    <tr>
+                                        <td colspan="5" class="empty-table-msg">
+                                            <i class="fa-solid fa-circle-notch fa-spin"></i> Procurando salas abertas...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Como Jogar (Tutorial Detalhado) -->
+        <div id="modal-tutorial" class="modal-overlay hidden">
+            <div class="modal-card glass-panel modal-wide">
+                <div class="modal-header">
+                    <h2><i class="fa-solid fa-book-open text-cyan"></i> Como Jogar — Manual da Startup</h2>
+                    <button class="modal-close" data-close="modal-tutorial">&times;</button>
+                </div>
+                <div class="modal-body tutorial-modal-body">
+                    
+                    <div class="tutorial-card">
+                        <div class="tut-icon text-gold"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="tut-info">
+                            <h4>1. Objetivo da Partida</h4>
+                            <p>Todos os jogadores começam com <strong>R$ 10.000</strong>. Ao final do tempo (5 ou 10 minutos), o jogador com o maior <strong>Patrimônio Líquido</strong> (Dinheiro + Estoque + Sede + Equipe) é coroado o grande campeão!</p>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-card">
+                        <div class="tut-icon text-cyan"><i class="fa-solid fa-cart-shopping"></i></div>
+                        <div class="tut-info">
+                            <h4>2. Mercado & Linha de Produção</h4>
+                            <p>Compre <strong>Insumos</strong> no Mercado quando a cotação estiver baixa. Seus <strong>Operários</strong> transformarão os insumos em produtos acabados prontos para venda.</p>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-card">
+                        <div class="tut-icon text-green"><i class="fa-solid fa-tags"></i></div>
+                        <div class="tut-info">
+                            <h4>3. Estratégia de Preço & Vendedores</h4>
+                            <p>Defina o preço de venda das suas mercadorias. Preços menores vendem rapidamente; preços altos dão mais lucro, mas exigem <strong>Vendedores</strong> e boa reputação!</p>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-card">
+                        <div class="tut-icon text-purple"><i class="fa-solid fa-users"></i></div>
+                        <div class="tut-info">
+                            <h4>4. Gestão de Equipe & Folha Salarial</h4>
+                            <p>Contrate <strong>Operários, Vendedores, Marketers e Desenvolvedores</strong>. Cuidado com o caixa: os salários são debitados automaticamente a cada 10 segundos!</p>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-card">
+                        <div class="tut-icon text-pink"><i class="fa-solid fa-bullhorn"></i></div>
+                        <div class="tut-info">
+                            <h4>5. Marketing & Expansão de Sede</h4>
+                            <p>Lance campanhas publicitárias para turbinar as vendas e expanda sua sede (Garagem até Multinacional) para aumentar a capacidade do armazém.</p>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-card highlight-card">
+                        <div class="tut-icon text-gold"><i class="fa-solid fa-dice"></i></div>
+                        <div class="tut-info">
+                            <h4>6. Roleta BET & Eventos Globais</h4>
+                            <p>Arrisque dinheiro virtual na <strong>Roleta BET</strong> com multiplicadores de <strong>0x até 5x</strong>! Fique atento às notícias no rodapé — eventos como <em>Alta Demanda</em> ou <em>Crise</em> mudam o mercado para todos.</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary btn-block modal-close" data-close="modal-tutorial">
+                        <i class="fa-solid fa-check"></i> ENTENDI, VAMOS JOGAR!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================= -->
+        <!-- 3. TELA DE SALA DE ESPERA (LOBBY) -->
+        <!-- ======================================================= -->
+        <section id="view-lobby" class="view hidden-view">
+            <div class="lobby-card glass-panel">
+                <div class="lobby-header">
+                    <div class="lobby-title-wrap">
+                        <h2>Startup Wars — Sala <span id="lobby-room-code-display" class="highlight-code">X7K29</span></h2>
+                        <button id="btn-copy-code" class="btn btn-xs btn-outline" title="Copiar código">
+                            <i class="fa-regular fa-copy"></i> Copiar Código
+                        </button>
+                    </div>
+                    <div class="lobby-meta">
+                        <span id="lobby-mode-badge" class="badge badge-mode">⚡ 5 min</span>
+                        <span id="lobby-players-count-badge" class="badge badge-players">Jogadores: 1/5</span>
+                    </div>
+                </div>
+
+                <div class="lobby-body">
+                    <p class="lobby-instruction">Compartilhe o código acima com seus amigos para jogarem juntos!</p>
+                    
+                    <div class="players-grid" id="lobby-players-list">
+                        <!-- Renderizado dinamicamente via JS -->
+                    </div>
+                </div>
+
+                <div class="lobby-footer">
+                    <button id="btn-leave-room" class="btn btn-danger-outline">
+                        <i class="fa-solid fa-arrow-left"></i> Sair da Sala
+                    </button>
+                    
+                    <div class="host-controls">
+                        <button id="btn-start-game" class="btn btn-primary btn-glow btn-large" disabled>
+                            <i class="fa-solid fa-play"></i> INICIAR PARTIDA
+                        </button>
+                        <small id="start-game-helper" class="text-muted">Aguardando pelo menos 2 jogadores para iniciar.</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 4. TELA PRINCIPAL DA PARTIDA (DASHBOARD SPA) -->
+        <!-- ======================================================= -->
+        <section id="view-game" class="view hidden-view">
+            
+            <!-- Barra Superior (Top Bar) -->
+            <header class="game-top-bar glass-panel">
+                <div class="top-brand">
+                    <span class="game-logo"><i class="fa-solid fa-chart-line"></i> STARTUP WARS</span>
+                    <span class="top-room-tag">SALA: <b id="game-room-code-tag">-----</b></span>
+                </div>
+
+                <div class="top-timer-box">
+                    <div class="timer-display" id="game-timer">⏱ 05:00</div>
+                </div>
+
+                <!-- 4 Indicadores Financeiros Principais -->
+                <div class="top-financial-kpis">
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fa-solid fa-wallet"></i> Dinheiro</div>
+                        <div class="kpi-value text-gold" id="kpi-money">R$ 10.000,00</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fa-solid fa-landmark"></i> Patrimônio</div>
+                        <div class="kpi-value text-cyan" id="kpi-networth">R$ 10.000,00</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fa-solid fa-arrow-trend-up"></i> Faturamento</div>
+                        <div class="kpi-value text-blue" id="kpi-revenue">R$ 0,00</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="kpi-label"><i class="fa-solid fa-chart-pie"></i> Lucro Líquido</div>
+                        <div class="kpi-value text-green" id="kpi-profit">R$ 0,00</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Layout Principal do Jogo: Centro de Operações + Lateral de Ranking -->
+            <div class="game-main-layout">
+                
+                <!-- Coluna Central de Painéis da Empresa -->
+                <main class="company-operations-area">
+                    
+                    <!-- Navegação das Abas de Operações -->
+                    <nav class="operations-nav">
+                        <button class="op-tab-btn active" data-target="tab-market">
+                            <i class="fa-solid fa-shop"></i> Mercado
+                        </button>
+                        <button class="op-tab-btn" data-target="tab-inventory">
+                            <i class="fa-solid fa-boxes-stacked"></i> Estoque & Vendas
+                        </button>
+                        <button class="op-tab-btn" data-target="tab-employees">
+                            <i class="fa-solid fa-users"></i> Funcionários
+                        </button>
+                        <button class="op-tab-btn" data-target="tab-marketing">
+                            <i class="fa-solid fa-bullhorn"></i> Marketing
+                        </button>
+                        <button class="op-tab-btn tab-bet-highlight" data-target="tab-bet">
+                            <i class="fa-solid fa-dice"></i> Roleta BET 🎰
+                        </button>
+                        <button class="op-tab-btn" data-target="tab-reports">
+                            <i class="fa-solid fa-chart-simple"></i> Relatórios & Upgrades
+                        </button>
+                    </nav>
+
+                    <!-- Conteúdo das Abas -->
+                    <div class="operations-content">
+                        
+                        <!-- ABA 1: MERCADO DE INSUMOS -->
+                        <div id="tab-market" class="op-pane active glass-panel">
+                            <div class="pane-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-cart-shopping text-cyan"></i> Mercado de Matéria-Prima</h3>
+                                    <p class="pane-sub">Compre insumos pelo menor preço possível para abastecer sua linha de produção.</p>
+                                </div>
+                                <div class="market-price-badge">
+                                    <span class="price-title">Cotação Atual</span>
+                                    <span class="price-val" id="market-raw-price">R$ 50,00 / un</span>
+                                    <span class="price-trend" id="market-trend"><i class="fa-solid fa-minus"></i> Estável</span>
+                                </div>
+                            </div>
+
+                            <div class="market-actions-grid">
+                                <div class="market-card">
+                                    <div class="market-card-title">📦 Pacote Inicial (10 un)</div>
+                                    <p class="market-card-cost" id="cost-pack-10">Custo: R$ 500,00</p>
+                                    <button class="btn btn-action-buy" onclick="buyRaw(10)">
+                                        <i class="fa-solid fa-plus"></i> Comprar 10 Insumos
+                                    </button>
+                                </div>
+                                <div class="market-card">
+                                    <div class="market-card-title">📦📦 Lote Padrão (50 un)</div>
+                                    <p class="market-card-cost" id="cost-pack-50">Custo: R$ 2.500,00</p>
+                                    <button class="btn btn-action-buy" onclick="buyRaw(50)">
+                                        <i class="fa-solid fa-plus"></i> Comprar 50 Insumos
+                                    </button>
+                                </div>
+                                <div class="market-card">
+                                    <div class="market-card-title">🚛 Carga Pesada (100 un)</div>
+                                    <p class="market-card-cost" id="cost-pack-100">Custo: R$ 5.000,00</p>
+                                    <button class="btn btn-action-buy" onclick="buyRaw(100)">
+                                        <i class="fa-solid fa-plus"></i> Comprar 100 Insumos
+                                    </button>
+                                </div>
+                                <div class="market-card highlight-card">
+                                    <div class="market-card-title">⚡ Encher Armazém ao Máximo</div>
+                                    <p class="market-card-cost">Comprar o máximo que couber no saldo/espaço</p>
+                                    <button class="btn btn-action-buy btn-glow" onclick="buyRaw(500)">
+                                        <i class="fa-solid fa-truck-ramp-box"></i> Comprar Máximo
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ABA 2: ESTOQUE & PRODUÇÃO -->
+                        <div id="tab-inventory" class="op-pane glass-panel">
+                            <div class="pane-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-warehouse text-blue"></i> Linha de Produção & Estoque</h3>
+                                    <p class="pane-sub">Controle sua capacidade de estocagem, produza mercadorias e defina seu preço de venda.</p>
+                                </div>
+                                <button class="btn btn-primary" onclick="manualProduce()">
+                                    <i class="fa-solid fa-bolt"></i> Produção Manual Expressa
+                                </button>
+                            </div>
+
+                            <!-- Capacidade e Barras de Estoque -->
+                            <div class="storage-overview">
+                                <div class="storage-bar-header">
+                                    <span>Capacidade do Armazém: <b id="storage-used-txt">30</b> / <b id="storage-max-txt">100</b> unidades</span>
+                                    <span id="storage-percentage-txt">30% Ocupado</span>
+                                </div>
+                                <div class="progress-bar-bg">
+                                    <div id="storage-progress-bar" class="progress-bar-fill" style="width: 30%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="inventory-split-grid">
+                                <div class="inv-stat-card">
+                                    <div class="inv-icon"><i class="fa-solid fa-cubes-stacked"></i></div>
+                                    <div class="inv-info">
+                                        <span class="inv-label">Insumos Disponíveis</span>
+                                        <span class="inv-count" id="inv-raw-count">25 un</span>
+                                        <small>Convertidos em produtos pelos operários</small>
+                                    </div>
+                                </div>
+                                <div class="inv-stat-card">
+                                    <div class="inv-icon"><i class="fa-solid fa-box-open text-green"></i></div>
+                                    <div class="inv-info">
+                                        <span class="inv-label">Produtos Prontos</span>
+                                        <span class="inv-count text-green" id="inv-finished-count">5 un</span>
+                                        <small>Vendidos a cada ciclo no mercado</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Configuração de Preço de Venda -->
+                            <div class="price-setting-card">
+                                <h4><i class="fa-solid fa-tags text-gold"></i> Estratégia de Preço de Venda</h4>
+                                <p>Preços mais baixos vendem mais rápido; preços mais altos geram margem maior, mas exigem boa reputação e marketing.</p>
+                                <div class="price-control-row">
+                                    <input type="range" id="price-slider" min="30" max="350" step="5" value="100">
+                                    <div class="price-input-box">
+                                        <span>R$</span>
+                                        <input type="number" id="price-number-input" min="30" max="350" value="100">
+                                        <button class="btn btn-secondary btn-sm" onclick="saveProductPrice()">Aplicar Preço</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ABA 3: FUNCIONÁRIOS (RH) -->
+                        <div id="tab-employees" class="op-pane glass-panel">
+                            <div class="pane-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-user-group text-purple"></i> Gestão de Pessoas & RH</h3>
+                                    <p class="pane-sub">Contrate colaboradores especializados para acelerar sua fábrica e turbinar suas vendas.</p>
+                                </div>
+                                <div class="payroll-badge">
+                                    <span>Folha Salarial (a cada 10s)</span>
+                                    <b id="payroll-total-txt">R$ 270,00</b>
+                                </div>
+                            </div>
+
+                            <div class="employees-grid">
+                                <!-- Operário -->
+                                <div class="employee-card">
+                                    <div class="emp-head">
+                                        <i class="fa-solid fa-helmet-safety emp-icon"></i>
+                                        <div>
+                                            <h4>Operário de Produção</h4>
+                                            <span class="emp-salary">Salário: R$ 120 / ciclo</span>
+                                        </div>
+                                    </div>
+                                    <p class="emp-desc">Transforma insumos em produtos acabados automaticamente a cada tick.</p>
+                                    <div class="emp-footer">
+                                        <div class="emp-counter">Qtd: <b id="count-worker">1</b></div>
+                                        <div class="emp-btns">
+                                            <button class="btn btn-xs btn-danger" onclick="fireEmp('worker')" title="Demitir">-</button>
+                                            <button class="btn btn-xs btn-success" onclick="hireEmp('worker')" title="Contratar por R$ 400">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Vendedor -->
+                                <div class="employee-card">
+                                    <div class="emp-head">
+                                        <i class="fa-solid fa-handshake emp-icon"></i>
+                                        <div>
+                                            <h4>Vendedor Comercial</h4>
+                                            <span class="emp-salary">Salário: R$ 150 / ciclo</span>
+                                        </div>
+                                    </div>
+                                    <p class="emp-desc">Escoa os produtos prontos e converte demanda reprimida em receita rápida.</p>
+                                    <div class="emp-footer">
+                                        <div class="emp-counter">Qtd: <b id="count-sales">1</b></div>
+                                        <div class="emp-btns">
+                                            <button class="btn btn-xs btn-danger" onclick="fireEmp('sales')" title="Demitir">-</button>
+                                            <button class="btn btn-xs btn-success" onclick="hireEmp('sales')" title="Contratar por R$ 500">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Marketer -->
+                                <div class="employee-card">
+                                    <div class="emp-head">
+                                        <i class="fa-solid fa-bullseye emp-icon"></i>
+                                        <div>
+                                            <h4>Especialista em Marketing</h4>
+                                            <span class="emp-salary">Salário: R$ 180 / ciclo</span>
+                                        </div>
+                                    </div>
+                                    <p class="emp-desc">Eleva a reputação da marca e atrai fluxo constante de clientes fiéis.</p>
+                                    <div class="emp-footer">
+                                        <div class="emp-counter">Qtd: <b id="count-marketing">0</b></div>
+                                        <div class="emp-btns">
+                                            <button class="btn btn-xs btn-danger" onclick="fireEmp('marketing')" title="Demitir">-</button>
+                                            <button class="btn btn-xs btn-success" onclick="hireEmp('marketing')" title="Contratar por R$ 600">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Dev -->
+                                <div class="employee-card">
+                                    <div class="emp-head">
+                                        <i class="fa-solid fa-laptop-code emp-icon"></i>
+                                        <div>
+                                            <h4>Desenvolvedor Tech</h4>
+                                            <span class="emp-salary">Salário: R$ 220 / ciclo</span>
+                                        </div>
+                                    </div>
+                                    <p class="emp-desc">Aprimora a qualidade e permite vender produtos a preços mais altos com facilidade.</p>
+                                    <div class="emp-footer">
+                                        <div class="emp-counter">Qtd: <b id="count-dev">0</b></div>
+                                        <div class="emp-btns">
+                                            <button class="btn btn-xs btn-danger" onclick="fireEmp('dev')" title="Demitir">-</button>
+                                            <button class="btn btn-xs btn-success" onclick="hireEmp('dev')" title="Contratar por R$ 800">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ABA 4: MARKETING -->
+                        <div id="tab-marketing" class="op-pane glass-panel">
+                            <div class="pane-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-bullhorn text-pink"></i> Campanhas de Marketing & Marca</h3>
+                                    <p class="pane-sub">Promova sua startup para elevar a reputação e explodir a demanda de vendas.</p>
+                                </div>
+                                <div class="reputation-badge">
+                                    <span>Reputação da Marca</span>
+                                    <b id="reputation-score-txt">50 / 100</b>
+                                </div>
+                            </div>
+
+                            <div class="active-campaign-banner" id="active-campaign-box" style="display: none;">
+                                <i class="fa-solid fa-fire text-gold"></i>
+                                <span>Campanha Ativa: <b id="active-campaign-name">Redes Sociais</b> (<span id="active-campaign-timer">30s</span> restantes)</span>
+                            </div>
+
+                            <div class="marketing-grid">
+                                <div class="marketing-card">
+                                    <h4>📱 Redes Sociais & Ads</h4>
+                                    <p class="mkt-boost">+25% Demanda | +6 Reputação</p>
+                                    <p class="mkt-price">Investimento: R$ 500,00</p>
+                                    <button class="btn btn-outline btn-block" onclick="launchMarketing('social')">Ativar (40s)</button>
+                                </div>
+                                <div class="marketing-card">
+                                    <h4>🌟 Parceria com Influenciadores</h4>
+                                    <p class="mkt-boost">+60% Demanda | +14 Reputação</p>
+                                    <p class="mkt-price">Investimento: R$ 1.500,00</p>
+                                    <button class="btn btn-outline btn-block" onclick="launchMarketing('influencer')">Ativar (45s)</button>
+                                </div>
+                                <div class="marketing-card">
+                                    <h4>📺 Comercial de TV em Horário Nobre</h4>
+                                    <p class="mkt-boost">+110% Demanda | +28 Reputação</p>
+                                    <p class="mkt-price">Investimento: R$ 4.000,00</p>
+                                    <button class="btn btn-outline btn-block" onclick="launchMarketing('tv')">Ativar (50s)</button>
+                                </div>
+                                <div class="marketing-card highlight-card">
+                                    <h4>👑 Patrocínio de Evento Global</h4>
+                                    <p class="mkt-boost">+200% Demanda | +50 Reputação</p>
+                                    <p class="mkt-price">Investimento: R$ 10.000,00</p>
+                                    <button class="btn btn-primary btn-block btn-glow" onclick="launchMarketing('global')">Ativar (60s)</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ABA 5: ROLETA BET 🎰 -->
+                        <div id="tab-bet" class="op-pane glass-panel">
+                            <div class="pane-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-dice text-gold"></i> Roleta BET — Alto Risco & Alto Retorno</h3>
+                                    <p class="pane-sub">Aposte o dinheiro virtual da empresa para tentar multiplicar seu capital. Cuidado para não falir!</p>
+                                </div>
+                                <div class="bet-stats-pill">
+                                    <span>Ganhos Líquidos BET: <b id="bet-net-score" class="text-green">R$ 0,00</b></span>
+                                </div>
+                            </div>
+
+                            <div class="bet-container">
+                                <!-- Roleta Visual Interativa com Canvas -->
+                                <div class="wheel-wrapper">
+                                    <div class="wheel-pointer">▼</div>
+                                    <canvas id="roulette-canvas" width="320" height="320"></canvas>
+                                    <div class="wheel-center-cap"><i class="fa-solid fa-gem"></i></div>
+                                </div>
+
+                                <!-- Painel de Controle de Apostas -->
+                                <div class="bet-controls-panel">
+                                    <div class="bet-status-box" id="bet-status-display">
+                                        <div class="bet-status-main">🎰 SELECIONE A APOSTA</div>
+                                        <div class="bet-status-sub">Multiplicadores de 0x até 5x!</div>
+                                    </div>
+
+                                    <div class="bet-amount-selector">
+                                        <label>Escolha o valor da aposta:</label>
+                                        <div class="bet-chips">
+                                            <button class="chip-btn active" data-bet="100">R$ 100</button>
+                                            <button class="chip-btn" data-bet="250">R$ 250</button>
+                                            <button class="chip-btn" data-bet="500">R$ 500</button>
+                                            <button class="chip-btn" data-bet="1000">R$ 1.000</button>
+                                        </div>
+                                    </div>
+
+                                    <button id="btn-spin-bet" class="btn btn-primary btn-glow btn-large btn-spin">
+                                        <i class="fa-solid fa-rotate"></i> GIRAR ROLETA BET!
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ABA 6: RELATÓRIOS & UPGRADES -->
+                        <div id="tab-reports" class="op-pane glass-panel">
+                            <div class="pane-header">
+                                <div>
+                                    <h3><i class="fa-solid fa-chart-line text-green"></i> Relatório Financeiro & Sede</h3>
+                                    <p class="pane-sub">Acompanhe seu fluxo de caixa consolidado e faça upgrade na sede da startup.</p>
+                                </div>
+                            </div>
+
+                            <div class="reports-grid">
+                                <!-- DRE Simplificado -->
+                                <div class="dre-card">
+                                    <h4><i class="fa-solid fa-file-invoice-dollar"></i> Demonstrativo de Resultados</h4>
+                                    <div class="dre-row">
+                                        <span>(+) Faturamento Bruto de Vendas:</span>
+                                        <b class="text-green" id="dre-revenue">R$ 0,00</b>
+                                    </div>
+                                    <div class="dre-row">
+                                        <span>(-) Custos Totais Acumulados:</span>
+                                        <b class="text-red" id="dre-expenses">R$ 0,00</b>
+                                    </div>
+                                    <div class="dre-row">
+                                        <span>(=) Lucro Operacional:</span>
+                                        <b id="dre-profit">R$ 0,00</b>
+                                    </div>
+                                    <div class="dre-row">
+                                        <span>📦 Total de Produtos Vendidos:</span>
+                                        <b id="dre-sold-count">0 unidades</b>
+                                    </div>
+                                    <div class="dre-row">
+                                        <span>🎰 Resultado de Apostas BET:</span>
+                                        <b id="dre-bet-result">R$ 0,00</b>
+                                    </div>
+                                </div>
+
+                                <!-- Upgrade de Sede / Nível -->
+                                <div class="upgrade-card">
+                                    <h4><i class="fa-solid fa-building-circle-arrow-right text-cyan"></i> Expansão da Empresa</h4>
+                                    <div class="current-tier-info">
+                                        <span class="tier-label">Sede Atual:</span>
+                                        <b class="tier-name text-gold" id="company-tier-name">Nível 1: Garagem</b>
+                                    </div>
+                                    <p class="tier-perks" id="company-tier-perks">Capacidade: 100 unidades de estoque.</p>
+                                    
+                                    <div class="next-tier-box" id="next-tier-box">
+                                        <div class="next-title">Próxima Expansão: <b id="next-tier-name">Escritório Compartilhado</b></div>
+                                        <div class="next-cost">Custo: <b class="text-cyan" id="next-tier-cost">R$ 3.000,00</b></div>
+                                        <button class="btn btn-primary btn-block" id="btn-upgrade-company" onclick="upgradeCompany()">
+                                            <i class="fa-solid fa-arrow-up"></i> Expandir Empresa
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+
+                <!-- Coluna Lateral Direita: Ranking em Tempo Real -->
+                <aside class="game-ranking-sidebar glass-panel">
+                    <div class="ranking-header">
+                        <h3><i class="fa-solid fa-trophy text-gold"></i> RANKING</h3>
+                        <span class="ranking-live-tag"><span class="live-dot"></span> AO VIVO</span>
+                    </div>
+                    
+                    <div class="ranking-list" id="ranking-list-container">
+                        <!-- Itens do Ranking Dinâmicos -->
+                    </div>
+                </aside>
+
+            </div>
+
+            <!-- Barra Inferior de Feed de Notícias e Notificações -->
+            <footer class="game-bottom-ticker glass-panel">
+                <div class="ticker-badge"><i class="fa-solid fa-newspaper"></i> NOTÍCIAS</div>
+                <div class="ticker-content" id="news-ticker-text">
+                    Mercado aberto! Gerencie sua empresa, produza com inteligência e domine a liderança.
+                </div>
+            </footer>
+        </section>
+
+        <!-- ======================================================= -->
+        <!-- 5. MODAL DE FINAL DE PARTIDA (FIM DE JOGO & PÓDIO) -->
+        <!-- ======================================================= -->
+        <div id="modal-gameover" class="modal-overlay hidden">
+            <div class="modal-card glass-panel modal-large">
+                <div class="modal-header text-center">
+                    <h2 class="text-gold"><i class="fa-solid fa-trophy"></i> FIM DA PARTIDA — RESULTADO FINAL</h2>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Pódio com Top 3 -->
+                    <div class="podium-container" id="podium-display">
+                        <!-- Preenchido via JavaScript -->
+                    </div>
+
+                    <!-- Tabela Completa de Resultados -->
+                    <h3 class="stats-section-title"><i class="fa-solid fa-table"></i> Desempenho Geral das Empresas</h3>
+                    <div class="table-container">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Posição</th>
+                                    <th>Empresa & Jogador</th>
+                                    <th>Patrimônio Final</th>
+                                    <th>Faturamento</th>
+                                    <th>Lucro</th>
+                                    <th>Vendas</th>
+                                    <th>Saldo BET</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gameover-table-tbody">
+                                <!-- Preenchido via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Destaques e Premiações Especiais -->
+                    <div class="awards-grid" id="special-awards-grid">
+                        <!-- Badges especiais -->
+                    </div>
+                </div>
+
+                <div class="modal-footer flex-center">
+                    <button id="btn-restart-game" class="btn btn-primary btn-glow btn-large">
+                        <i class="fa-solid fa-arrows-rotate"></i> JOGAR NOVAMENTE
+                    </button>
+                    <button id="btn-exit-to-menu" class="btn btn-secondary btn-large">
+                        <i class="fa-solid fa-house"></i> MENU PRINCIPAL
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast de Notificação Flutuante -->
+        <div id="toast-container" class="toast-container"></div>
+
+    </div>
+
+    <!-- Script Principal do Jogo -->
+    <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>
